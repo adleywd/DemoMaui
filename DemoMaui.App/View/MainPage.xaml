@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:DemoMaui.App.Model"
+             xmlns:viewmodel="clr-namespace:DemoMaui.App.ViewModel"
+             x:DataType="viewmodel:MainViewModel"
+             Title="{Binding Title}"
+             x:Class="DemoMaui.App.View.MainPage">
+
+    <Grid ColumnDefinitions="*,*" 
+          ColumnSpacing="5" 
+          RowDefinitions="*, Auto"
+          RowSpacing="0">
+        
+        <CollectionView Grid.ColumnSpan="2"
+                        ItemsSource="{Binding TestModels}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:TestModel">
+                    <Grid Padding="10">
+                        <Frame HeightRequest="125">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}},Path=GotODetailsCommand}"/>
+                            </Frame.GestureRecognizers>
+                            <Label Text="{Binding Name}"></Label>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <Button Text="DoSomething"
+                Command="{Binding GetTestDataCommand}"
+
+                IsEnabled="{Binding IsNotBusy}"
+                Grid.Row="1"
+                Margin="8"/>
+
+        <ActivityIndicator 
+            IsVisible="{Binding IsBusy}" 
+            IsRunning="{Binding IsBusy}"
+            HorizontalOptions="Fill"
+            VerticalOptions="Center"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            />
+
+    </Grid>
+</ContentPage>
